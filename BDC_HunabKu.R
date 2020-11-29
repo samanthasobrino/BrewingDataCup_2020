@@ -161,6 +161,8 @@ Output<-Output %>%
   group_by(Id_Cliente) %>% 
   summarise_all(funs(trimws(sum(.))))
 write.csv(Output,"Output.csv",row.names = FALSE)
+Zonas<-arrange(Zonas, Id_Cliente)
+write.csv(Zonas,"Zonas.csv",row.names = FALSE)
 
 
 ## Visualizar las Zonas
@@ -176,6 +178,7 @@ ggplot(Zonas)+aes(x=Longitud,y=Latitud)+
 #####
 DistanciaRutas<-NULL
 library(TSP)
+set.seed(77)
 ruta1 <- solve_TSP(ATSP(distm(Zona1[4:3], fun = distGeo)/1000,Zona1$Id_Cliente), method = "nn")
 DistanciaRutas[1] <- tour_length(ruta1)
 
@@ -195,3 +198,4 @@ ruta6 <- solve_TSP(ATSP(distm(Zona6[4:3], fun = distGeo)/1000,Zona6$Id_Cliente),
 DistanciaRutas[6] <- tour_length(ruta6)
 
 ResumenRutas <- data.frame(Zonas=seq(1,6), Clientes=NumClientes, Volumen=Vol_Entregas, DistanciaKm=DistanciaRutas)
+
